@@ -1,0 +1,79 @@
+
+class Critter(object):
+    def __init__(self):
+        self.name = 0
+        self.hunger = 0
+        self.boredom = 0
+
+    def __pass_time(self):
+        self.hunger += 1
+        self.boredom += 1
+
+    @property
+    def mood(self):
+        unhappyness = self.hunger + self.boredom
+        if unhappyness < 5:
+            m = 'lovely'
+        elif 5 <= unhappyness <= 10:
+            m = 'not bad'
+        elif 11 <= unhappyness <= 15:
+            m = 'quite bad'
+        else:
+            m = 'awful'
+        return m
+
+    def talk(self):
+        print('my name is', self.name, "I'm", self.mood)
+        self.__pass_time()
+
+    def eat(self, food=4):
+        self.hunger -= food
+        if self.hunger < 0:
+            self.hunger = 0
+        self.__pass_time()
+
+    def play(self, fun=4):
+        self.boredom -= fun
+        if self.boredom < 0:
+            self.boredom = 0
+        self.__pass_time()
+
+
+def main():
+    crit_name = input('name of your pet')
+    crit = Critter(crit_name)
+    choice = None
+    while choice != 0:
+        print('choose 0-3 variants of answers:'
+              '0 - exit'
+              '1 - check the condition'
+              '2 - feed your pet'
+              '3 - play with your pet')
+        choice = input('your answer:')
+        if choice == '0':
+            print('goodbuy')
+        elif choice == '1':
+            crit.talk()
+        elif choice == '2':
+            crit.eat()
+        elif choice == '3':
+            crit.play()
+        else:
+            print('wrong choice, pls, change it')
+main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
