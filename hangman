@@ -1,0 +1,63 @@
+import random
+
+CONATANTS = (0, 1, 2, 3, 4, 5, 6, 7, 'YOU LOSE')
+WORD = ('EASY', 'CLOSE', 'DERIVANIVE', 'MOTHER', 'HANGMAN')
+word = random.choice(WORD)
+lenght_word = '-' * len(word)
+wrong = 0
+WRONG = 8
+used_letters = []
+lost = len(lenght_word)
+
+while wrong <= WRONG and lenght_word != word:
+    print("your mistakes", CONATANTS[wrong])
+    print(used_letters, 'these letters was offered yet')
+    print(lenght_word, 'word now')
+    letter = input()
+    letter = letter.upper()
+    while letter in used_letters:
+        print("you've already used this letter, choose other one!")
+        letter = input()
+        letter = letter.upper()
+    used_letters.append(letter)
+
+    if letter in word:
+        count = 0
+
+        new = ''
+        for i in range(len(word)):
+            if letter == word[i]:
+                count += 1
+                new += letter
+            else:
+                new += lenght_word[i]
+        lost -= count
+        print('there is', count, 'letters is word!')
+        print('there are only', lost, 'letters')
+        print(new)
+        lenght_word = new
+    else:
+        print('no word in this word')
+        wrong += 1
+
+    if lenght_word == word:
+        print('you win! ', '\n', 'would you like to play again?')
+        print('\n', '0 - no', '\n', '1 - yes')
+        your_choice = int(input())
+        if your_choice == 1:
+            word = random.choice(WORD)
+            lenght_word = '-' * len(word)
+            wrong = 0
+            used_letters = []
+            lost = len(lenght_word)
+        elif your_choice == 0:
+            print('thanks. Goodbuy')
+            break
+        else:
+            print('choose between 0 and 1')
+            your_choice = int(input())
+
+
+
+
+
