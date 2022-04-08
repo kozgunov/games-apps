@@ -1,0 +1,163 @@
+X = 'x'
+O = 'o'
+EMPTY = '='
+TIE = 'НИЧЬЯ'
+FIELD = 9
+low = 0
+high = 9
+
+
+def ask():
+    response = None
+    while response not in ('yes', 'no'):
+        response = input('would you go first?: yes or no?').lower()
+    return response
+
+def ask_number(low, high):
+    response = None
+    while response not in range(low, high):
+        response = int(input('какое поле вы выберете?'))
+    return response
+
+def choice():
+    go_first = ask()
+    if go_first == 'no':
+        you = X
+        opp = O
+    else:
+        you = O
+        opp = X
+    return opp, you
+
+def field():
+    board = []
+    for i in range(FIELD):
+        board.append(EMPTY)
+    print(board)
+    return board
+
+def display_board(board):
+    print('\n', board[0], '|', board[1], '|', board[2])
+    print('\n', board[3], '|', board[4], '|', board[5])
+    print('\n', board[6], '|', board[7], '|', board[8])
+
+def legal_moves(board):
+    moves = []
+    for i in range(FIELD):
+        if board[i] == EMPTY:
+            moves.append(i)
+        print(moves)
+        return moves
+
+def winner(board):
+    win_if = ((0, 1, 2),
+              (3, 4, 5),
+              (6, 7, 8),
+              (0, 3, 6),
+              (1, 4, 7),
+              (2, 5, 8),
+              (0, 5, 8),
+              (3, 5, 7))
+    for row in win_if:
+        if board[row[0]] == board[row[1]] == board[row[2]] != EMPTY:
+            winer = board[row[0]]
+            return winer
+        if EMPTY not in board:
+            return TIE
+    return None
+
+def human_move(board, you):
+    legal = legal_moves(board)
+    move = None
+    while move not in legal:
+        move = ask_number(0, FIELD)
+        if move != EMPTY:
+            print('try again')
+    print('good field!')
+    return move
+
+def computer_move(board, you, opp):
+    board = board[:]
+    BEST_MOVES = (4, 0, 2, 6, 8, 1, 3, 5, 7)
+    print("I'll choose number:", end = '')
+    for move in legal_moves(board):
+        board[move] = opp
+        if winner(board) == opp:
+            print(move)
+            return move
+        board[move] = EMPTY
+    for move in legal_moves(board):
+        board[move] = you
+        if winner(board) == you:
+            print(move)
+            return move
+        board[move] = EMPTY
+    for move in BEST_MOVES:
+        if move in legal_moves(board):
+            print(move)
+            return move
+
+def next_turn(turn):
+    if turn == X:
+        return O
+    else:
+        return X
+
+def congrat_winner(winner, you, opp):
+    if winner != TIE:
+        print('winner - ', winner)
+    else:
+        print('tie#')
+    if winner == opp:
+        print('computer - winner', opp)
+    elif winner == you:
+        print('you - winner', you)
+    elif winner == TIE:
+        print('so pity - tie')
+    return winner
+
+def main():
+    board = field()
+    you, opp = choice()
+    turn = X 
+    display_board(board)
+    while not winner(board):
+        if turn == you:
+            move = human_move(board, you)
+            board[move] = you
+        else:
+            move = computer_move(board, opp, you)
+            board[move] = opp
+        display_board(board)
+        turn = next_turn(turn)
+    winer = winner(board)
+    congrat_winner(winer, opp, you)
+
+
+
+main()
+'''
+
+def mm(board, you, opp, turn):
+    ask()
+    ask_number(low, high)
+    choice()
+    field()
+    legal_moves(board)
+    winner(board)
+    human_move(board, you)
+    computer_move(board, you, opp)
+    next_turn(turn)
+    congrat_winner(winner, you, opp)
+
+
+
+def ii():
+    board = field()
+    legal_moves(board)
+    winner(board)
+
+
+'''
+
+
