@@ -1,0 +1,33 @@
+from tkinter import *
+
+def fibo(n):
+    if n in (1, 2):
+        return 1
+    return fibo(n - 1) + fibo(n - 2)
+
+def mycom():
+    n = e.get()
+    if n.isdigit():
+        t1.config(text = str(fibo(int(n))))
+        window.config(bg='sky blue')
+    else:
+        t1.config(text="введите число без знаков препинания и/или букв")
+        window.config(bg = 'red')
+
+window = Tk()
+window.geometry('480x150')
+window.config(bg = 'sky blue')
+window.title('введите число')
+
+t1 = Label(window, text = 'генератор чисел фибоначчи', fg = 'black')
+t1.config(font = ('blue', 16))
+t1.pack()
+
+e = Entry(window, width = 20)
+e.pack()
+
+b1 = Button(window, text = 'Click my!', command = mycom)
+b1.config(width = 20, height = 2, bg = "green", fg = "blue")
+b1.pack()
+
+window.mainloop()
