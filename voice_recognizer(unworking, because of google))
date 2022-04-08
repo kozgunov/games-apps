@@ -1,0 +1,36 @@
+import speech_recognition as sr
+
+
+r = sr.Recognizer()
+mic = sr.Microphone(device_index = 1)
+#list_mic = sr.Microphone.list_microphone_names()
+#for i in range(len(list_mic)):
+#    print(i, list_mic[i])
+
+with mic as source:
+    print("say the first number")
+    audio = r.listen(source)
+
+try:
+    a = r.recognize_google(language = 'ru-RU')
+    print("Google Speech Recognition thinks you said " + a)
+except sr.UnknownValueError:
+    print("your speech is not understandable")
+except sr.RequestError as e:
+    print("unternet error".format(e))
+r = sr.Recognizer()
+with mic as source:
+    print("say the second number")
+    audio = r.listen(source)
+
+try:
+    b = r.recognize_google(language = 'ru-RU')
+    print("Google Speech Recognition thinks you said " + b)
+except sr.UnknownValueError:
+    print("your speech is not understandable")
+except sr.RequestError as e:
+    print("unternet error".format(e))
+
+print('A+B=', int(a) + int(b))
+print(sr.Microphone.list_microphone_names())
+
