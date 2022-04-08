@@ -1,0 +1,184 @@
+import random
+
+def minz(open_list):
+    mins=INFINITE
+    minindex=()
+    for pair in open_list:
+        if pair in dictionary.keys() and dictionary[pair]>mins:
+            mins=dictionary[pair]
+            minindex=pair
+    return minindex
+
+b = 0
+n = 10#int(input('всего столбов:'))
+m = 10#int(input('всего рядов:'))
+p = 0.4#float(input('вероятность припятствия:'))
+maze = []#лабиринт
+x = 0#int(input('начальный x:'))#стартовая точка
+y = 0#int(input('начальный y:'))
+xfinish_point = 9#int(input('конечный x:'))#кончная точка
+yfinish_point = 9#int(input('конечный y:'))
+counter = 0#кол-во пройденных клеток
+step = 0
+close_list = []
+open_list = [(x, y)]
+dictionary = {}
+oldcounter = 0
+
+for i in range(n):#заполнение поля(1 - припятствие, 0 - свободная клетка)
+    maze.append([0] * m)
+for i in range(n):
+    for j in range(m):
+        c = random.random()
+        if c <= p:
+            maze[j][i] = 1
+        elif c > p:
+            maze[j][i] = 0
+        maze[x][y] = 0
+        maze[xfinish_point][yfinish_point] = 0
+for i in maze:
+    print(i)
+
+
+
+while x != xfinish_point or y != yfinish_point:
+    INFINITE = float('inf')
+    z1 = z2 = z3 = z4 = z5 = z6 = z7 = z8 = INFINITE
+    nn = 0
+    oldcounter = counter
+    if (x, y) not in close_list:
+        if x > 0 and y > 0 and maze[x - 1][y - 1] == 0:
+            srtaight_path1 = 10 * (abs(xfinish_point - (x - 1)) + abs(yfinish_point - (y - 1))) # манхетонское растояние
+            weight_cell = srtaight_path1 + 14  # вес клетки(стоит ли на нее наступать) + 14 т.к. идем вбок
+            if z1 > weight_cell:
+                z1 = weight_cell
+                nn = 1
+        if y > 0 and x < n - 1 and maze[x + 1][y - 1] == 0:
+            srtaight_path2 = 10 * (abs(xfinish_point - (x + 1)) + abs(yfinish_point - (y - 1)))
+            weight_cell = srtaight_path2 + 14
+            if z2 > weight_cell:
+                z2 = weight_cell
+                nn = 2
+        if x > 0 and y < n - 1 and maze[x - 1][y + 1] == 0:
+            srtaight_path3 = 10 * (abs(xfinish_point - (x - 1)) + abs(yfinish_point - (y + 1)))
+            weight_cell = srtaight_path3 + 14
+            if z3 > weight_cell:
+                z3 = weight_cell
+                nn = 3
+        if x < n - 1 and y < n - 1 and maze[x + 1][y + 1] == 0:
+            srtaight_path4 = 10 * (abs(xfinish_point - (x + 1)) + abs(yfinish_point - (y + 1)))
+            weight_cell = srtaight_path4 + 14
+            if z4 > weight_cell:
+                z4 = weight_cell
+                nn = 4
+        if y > 0 and maze[x][y - 1] == 0:
+            srtaight_path5 = 10 * (abs(xfinish_point - x) + abs(yfinish_point - (y - 1)))
+            weight_cell = srtaight_path5 + 10 # + 10 т.к. идем прямо
+            if z5 > weight_cell:
+                z5 = weight_cell
+                nn = 5
+        if y < n - 1 and maze[x][y + 1] == 0:
+            srtaight_path6 = 10 * (abs(xfinish_point - x) + abs(yfinish_point - (y + 1)))
+            weight_cell = srtaight_path6 + 10
+            if z6 > weight_cell:
+                z6 = weight_cell
+                nn = 6
+        if x > 0 and maze[x - 1][y] == 0:
+            srtaight_path7 = 10 * (abs(xfinish_point - (x - 1)) + abs(yfinish_point - y))
+            weight_cell = srtaight_path7 + 10
+            if z7 > weight_cell:
+                z7 = weight_cell
+                nn = 7
+        if x < n - 1 and maze[x + 1][y] == 0:
+            srtaight_path8 = 10 * (abs(xfinish_point - (x + 1)) + abs(yfinish_point - y))
+            weight_cell = srtaight_path8 + 10
+            if z8 > weight_cell:
+                z8 = weight_cell
+                nn = 8
+
+        if z1 is not INFINITE and (x - 1, y - 1) not in close_list:
+            open_list.append((x - 1, y - 1))
+            b1 = z1
+        if z2 is not INFINITE and (x + 1, y - 1) not in close_list:
+            open_list.append((x + 1, y - 1))
+            b2 = z2
+        if z3 is not INFINITE and (x - 1, y + 1) not in close_list:
+            open_list.append((x - 1, y + 1))
+            b3 = z3
+        if z4 is not INFINITE and (x + 1, y + 1) not in close_list:
+            open_list.append((x + 1, y + 1))
+            b4 = z4
+        if z5 is not INFINITE and (x, y - 1) not in close_list:
+            open_list.append((x, y - 1))
+            b5 = z5
+        if z6 is not INFINITE and (x, y + 1) not in close_list:
+            open_list.append((x, y + 1))
+            b6 = z6
+        if z7 is not INFINITE and (x - 1, y) not in close_list:
+            open_list.append((x - 1, y))
+            b7 = z7
+        if z8 is not INFINITE and (x + 1, y) not in close_list:
+            open_list.append((x + 1, y))
+            b8 = z8
+
+        b = min(z1, z2, z3, z4, z5, z6, z7, z8)
+        dictionary[(x, y)] = b
+
+        close_list.append((x, y))
+        if (x, y) in open_list:
+            open_list.remove((x, y))
+
+        minz(open_list)
+
+        if z1 == b:#перемещение
+            step += 14
+            x -= 1
+            y -= 1
+        elif z2 == b:
+            step += 14
+            x += 1
+            y -= 1
+        elif z3 == b:
+            step += 14
+            x -= 1
+            y += 1
+        elif z4 == b:
+            step += 14
+            x += 1
+            y += 1
+        elif z5 == b:
+            step += 10
+            y -= 1
+        elif z6 == b:
+            step += 10
+            y += 1
+        elif z7 == b:
+            step += 10
+            x -= 1
+        elif z8 == b:
+            step += 10
+            x += 1
+        counter += 1
+
+
+    if counter == oldcounter:
+        print('тупик')
+        break
+if counter != oldcounter:
+    close_list.append((x, y))
+    print(close_list)
+else:
+    print(close_list)
+
+print(step, 'пройденное растояние')
+print(counter, 'кол-во ходов')
+
+
+
+
+
+
+
+
+
+
