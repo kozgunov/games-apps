@@ -1,0 +1,68 @@
+import sys
+import random
+
+def open_file(file_name, mode):
+    try:
+        the_file = open(file_name, mode, encoding='utf-8')
+    except IOError as e:
+        print("it's unavailable opening this file, the program is finished", e)
+        sys.exit()
+    else:
+        return the_file
+
+def next_line(the_file):
+    line = the_file.readline()
+    line = line.replace("/", '\n')# addition shift of strings
+    return line
+
+def next_block(the_file):
+    category = next_line(the_file)
+    question = next_line(the_file)
+    answers = []#4 for each question
+    explanation = None
+    for i in range(4):
+        answers.append(next_line(the_file))
+    correct = next_line(the_file)
+    if correct:
+        correct = random.randint(1, 4)
+        explanation = next_line(the_file)
+    return category, question, answers, correct, explanation
+
+def welcome(title):
+    print('welcome to chapter:', title)
+
+def main():
+    fil_file = open_file('fil.txt', 'r')
+    title = next_line(fil_file)
+    welcome(title)
+    score = 0
+    category, question, answers, correct, explanation = next_block(fil_file)
+    while category:
+        print('category:', category)
+        print("question", question)
+        for i in range(4):
+            print(i + 1, '.', answers[i])
+        answer = int(input('write your answer:'))
+        if answer == correct:
+            score += 1
+            print('your answer is correct')
+        else:
+            print('irregular answer!')
+        print(explanation)
+        print('your score', score)
+
+        category, question, answers, correct, explanation = next_block(fil_file)
+
+        fil_file.close()
+        print('it was the last question')
+        print('your score:', score)
+    fil_file.close()
+
+main()
+
+
+
+
+
+
+
