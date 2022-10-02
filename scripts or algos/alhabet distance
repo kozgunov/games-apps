@@ -1,0 +1,26 @@
+k = 5#int(input())
+
+alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
+            'v', 'w', 'x', 'y', 'z']
+a = []
+bit = 0
+
+
+def func(bit, k):
+    a.append(bit)
+    lenght = len(a)
+
+    if lenght == k:
+        s = ""
+        for i in range(0, k):
+            if a[i]: s += alphabet[i]
+        print(s)
+        return
+
+    func(0, k)
+    a.pop()
+    func(1, k)
+    a.pop()
+func(0, k)
+a.pop()
+func(1, k)
